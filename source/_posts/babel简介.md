@@ -35,7 +35,7 @@ arr.map(function(item) {
 
 #### 配置文件.babelrc/babel.config.js
 
-之前版本的babel都是使用`.baberc`来做配置文件，babel7引入了`babel.config.js`。但是它并不是`.baberc`的替代品，二者根据使用的场景不同自行选择。
+之前版本的babel都是使用`.babelrc`来做配置文件，babel7引入了`babel.config.js`。但是它并不是`.babelrc`的替代品，二者根据使用的场景不同自行选择。
 
 **.babelrc**
 
@@ -52,7 +52,7 @@ arr.map(function(item) {
 
 @babel/preset-typescript：转换ts语法
 
-**.Babel.config.js**
+**.babel.config.js**
 
 ```javascript
 module.exports = function () {
