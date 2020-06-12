@@ -1,5 +1,5 @@
 ---
-title: this、call和apply
+title: this、call、apply 和 bind
 date: 2020-03-20 21:50:59
 tags:
 categories:
@@ -7,24 +7,24 @@ categories:
 - 设计模式
 ---
 
-# 1、this、call 和 apply
+# this、call、apply 和 bind
 
-## this
+## 1、this
 
 **和别的语言大相径庭的是，Javascript的this总是指向一个对象，而具体指向哪个对象是在运行时基于函数的执行环境动态绑定的，而非函数声明时的环境。**
 
-### this的指向
+### 1.1、this的指向
 
 除去不常用的 with 和 eval 的情况，具体到实际应用中，this 的指向大致可以分为以下 4 种：
 
-- 作为对象的方法调用
-- 作为普通函数调用
-- 构造器调用
-- Function.prototype.call 或 Function.prototype.apply 调用
+> - 作为对象的方法调用
+> - 作为普通函数调用
+> - 构造器调用
+> - Function.prototype.call 或 Function.prototype.apply 调用
 
 下面分别进行介绍
 
-***1.作为对象的方法调用***
+#### 1.作为对象的方法调用
 当函数作为对象的方法被调用时， this 指向对象：
 
 ```javascript
@@ -38,7 +38,7 @@ var obj = {
 obj.getA()
 ```
 
-***2.作为普通函数调用***
+#### 2.作为普通函数调用
 当函数不作为对象的属性被调用时，也就是我们常说的普通函数方式，此时的 this 总是指向全局对象。在浏览器的 Javascript 里， 这个全局对象是 `window` 对象。
 
 ```javascript
@@ -62,7 +62,7 @@ var getName = myObject.getName
 console.log( getName() ) // globalName
 ```
 
-***3.构造器调用***
+#### 3.构造器调用
 Javascript 中没有类，但是可以从构造器中创建对象，同时也提供了 new 运算符，使得构造器看起来更像一个类。
 大部分 Javascript 函数都可以当作构造器使用。构造器的外表跟普通函数一模一样，它们的区别在于被调用的方式。当用 new 运算符调用函数时，该函数总会返回一个对象，通常情况下，构造器里的this就指向返回的这个对象，见代码如下：
 
@@ -96,7 +96,7 @@ var obj3 = new MyClass()
 console.log( obj3.name ) // sven
 ```
 
-***4.Function.prototype.call或者Function.prototype.apply调用***
+#### 4.Function.prototype.call或者Function.prototype.apply调用
 跟普通的函数调用相比，用 Function.prototype.call 和 Function.prototype.apply 可以动态地改变传人函数的 this：
 
 ```javascript
@@ -114,7 +114,7 @@ console.log( obj1.getName() ) // sven
 console.log( obj1.getName.call(obj2) ) // anne
 ```
 
-### 丢失的this
+### 1.2、丢失的this
 
 ```javascript
 var obj = {
@@ -130,9 +130,11 @@ var getName2 = obj.getName // 此时是作为普通函数调用，this 指向 wi
 console.log( getName2() ) // undefined
 ```
 
-## 2、call和apply
+## 2、call、apply和 bind
 
-### 2.1、 call 和 apply的区别
+### 2.1、 call、apply 和 bind的区别
+
+`Function.prototype.bind` 方法创建一个新的函数，在 bind() 被调用时，这个新函数的 this 被指定为 bind() 的第一个参数，而其余参数将作为新函数的参数，供调用时使用。
 
 `Function.prototype.call`和`Function.prototype.apply`都是非常常用的方法。它们的作用一模一样，区别仅在于传入参数形式的不同。
 
@@ -159,30 +161,76 @@ func.call(null, 1, 2, 3)
 
 `Math.max.apply(null, [1, 2, 3, 7, 9])`
 
-### 2.2、 call 和 apply的用途
+### 2.2、 call、apply 和 bind 实现原理
 
-#### 1、改变 this 指向
+#### 1、Function.prototype.call
+
+模拟`Function.prototype.call`
 
 ```javascript
-var obj1 = {
+Function.prototype.call = function (content, ...args) {
+  if (!content) {
+    content = typeof window === 'undefined' ? global : window
+  }
+
+  // this 的指向是当前调用call的函数 func (func.call)
+  content.func = this;
+  // call 参数给调用函数
+  var result = content.func(...args);
+  // content 上并没有 func 属性，需要移除
+  delete content.func;
+  return result;
+}
+
+var obj = {
     name: 'sven'
 }
 
-var obj2 = {
-    name: 'anne'
-}
-window.name = 'window'
-
-var getName = function () {
-    console.log(this.name)
+function getName () {
+  return this.name;
 }
 
-getName() // window
-getName().call(obj1) // sven
-getName().call(obj2) // anne
+getName.call(obj);
+
 ```
 
-#### 2、 Function.prototype.bind
+#### 2、Function.prototype.apply
+
+模拟`Function.prototype.apply`
+
+```javascript
+Function.prototype.apply = function (content, args) {
+  if (!content) {
+    content = typeof window === 'undefined' ? global : window
+  }
+
+  // this 的指向是当前调用call的函数 func (func.call)
+  content.func = this;
+  var result;
+  if (!args) {
+    // 第二个参数为 null, undefined
+    result = content.func();
+  } else {
+    result = content.func(...args);
+  }
+  // content 上并没有 func 属性，需要移除
+  delete content.func;
+  return result;
+}
+
+var obj = {
+    name: 'sven'
+}
+
+function getName () {
+  return this.name;
+}
+
+getName.apply(obj);
+
+```
+
+#### 3、 Function.prototype.bind
 
 `Function.prototype.bind` ，用来指定函数内部的 this 指向
 
@@ -231,7 +279,30 @@ var func = function () {
 func()
 ```
 
-### 2.3、 借用其他对象的方法
+### 2.3、 call、apply 和 bind 的用途
+
+#### 1、改变 this 指向
+
+```javascript
+var obj1 = {
+    name: 'sven'
+}
+
+var obj2 = {
+    name: 'anne'
+}
+window.name = 'window'
+
+var getName = function () {
+    console.log(this.name)
+}
+
+getName() // window
+getName().call(obj1) // sven
+getName().call(obj2) // anne
+```
+
+#### 2、 借用其他对象的方法
 
 一、借用构造函数,通过这种技术，可以实现一些类似继承的效果
 
@@ -251,3 +322,6 @@ B.prototype.getName = function () {
 var b = new B('sven')
 console.log(b.getName())
 ```
+
+
+
