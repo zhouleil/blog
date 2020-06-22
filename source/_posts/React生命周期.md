@@ -25,3 +25,7 @@ categories:
 |          | componentDidUpdate        | componentDidUpdate              |
 |          |                           |                                 |
 | 卸载阶段 | componentWillUnMount      | componentWillUnMount            |
+
+## 推荐阅读
+
+[React v16.3 版本新生命周期函数浅析及升级方案](https://zhuanlan.zhihu.com/p/36062486)
