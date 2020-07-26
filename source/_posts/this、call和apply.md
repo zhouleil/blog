@@ -7,7 +7,6 @@ categories:
 - 设计模式
 ---
 
-# this、call、apply 和 bind
 
 ## 1、this
 
@@ -25,6 +24,7 @@ categories:
 下面分别进行介绍
 
 #### 1.作为对象的方法调用
+
 当函数作为对象的方法被调用时， this 指向对象：
 
 ```javascript
@@ -39,6 +39,7 @@ obj.getA()
 ```
 
 #### 2.作为普通函数调用
+
 当函数不作为对象的属性被调用时，也就是我们常说的普通函数方式，此时的 this 总是指向全局对象。在浏览器的 Javascript 里， 这个全局对象是 `window` 对象。
 
 ```javascript
@@ -63,6 +64,7 @@ console.log( getName() ) // globalName
 ```
 
 #### 3.构造器调用
+
 Javascript 中没有类，但是可以从构造器中创建对象，同时也提供了 new 运算符，使得构造器看起来更像一个类。
 大部分 Javascript 函数都可以当作构造器使用。构造器的外表跟普通函数一模一样，它们的区别在于被调用的方式。当用 new 运算符调用函数时，该函数总会返回一个对象，通常情况下，构造器里的this就指向返回的这个对象，见代码如下：
 
@@ -97,6 +99,7 @@ console.log( obj3.name ) // sven
 ```
 
 #### 4.Function.prototype.call或者Function.prototype.apply调用
+
 跟普通的函数调用相比，用 Function.prototype.call 和 Function.prototype.apply 可以动态地改变传人函数的 this：
 
 ```javascript
@@ -323,5 +326,6 @@ var b = new B('sven')
 console.log(b.getName())
 ```
 
+## 原文来自
 
-
+> JavaScript设计模式与开发实践（曾探）
