@@ -57,3 +57,4 @@ console.log('script 2')
 ## 参考
 + [详解JavaScript中的Event Loop（事件循环）机制](https://zhuanlan.zhihu.com/p/33058983)
 + [浏览器中的事件循环机制](https://zhuanlan.zhihu.com/p/30034547)
++ [setTimeout和setImmediate到底谁先执行，本文让你彻底理解Event Loop](https://www.cnblogs.com/dennisj/p/12550996.html)
