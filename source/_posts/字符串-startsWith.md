@@ -44,3 +44,5 @@ if (!String.prototype.startsWith) {
   })
 }
 ```
+
+## [https://developer.cdn.mozilla.net/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith](https://developer.cdn.mozilla.net/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith)

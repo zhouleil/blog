@@ -61,4 +61,4 @@ function includes (target, str, separator) {
 }
 ```
 
-## [来源](https://developer.cdn.mozilla.net/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/includes)
+## [https://developer.cdn.mozilla.net/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/includes](https://developer.cdn.mozilla.net/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/includes)
